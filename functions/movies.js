@@ -21,11 +21,8 @@ exports.handler = async () => {
       .then((response) => response.json())
       .then((data) => {
         const scores = data.Ratings;
-        console.log("data", data);
 
-        console.log("data with ratings", scores);
         // once you get the scores return all of the movies with their scores
-        // console.log("movies", { ...movies, scores });
         return {
           ...movie,
           scores,

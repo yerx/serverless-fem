@@ -71,6 +71,36 @@
 </template>
 
 <script>
+  // create a function to add the scores that we get back from the API call
+  function addScores(element, scores) {
+    // iterate through the scores and create a HTML elements to display the scores
+    scores.forEach((score) => {
+      // declare a constant item that will create a li html element
+      const item = document.createElement('li');
+      // declare a constant label that will create a span element
+      const label = document.createElement('span');
+      label.classList.add('source');
+
+      // shorten the long name
+      label.innerText = score.Source === 'Internet Movie Database' ? 'IMDb' : score.Source;
+      // add the score to the element
+      item.appendChild(label);
+
+      // declare constant value that will create a span element
+      const value = document.createElement('span');
+      // set the inner text to the score's value
+      value.innerText = score.Value;
+      // add the value
+      item.appendChild(value);
+
+      // declare a constant scoreElement set equal to the element with the class scores
+      const scoreElement = element.querySelector('.scores');
+      scoreElement.appendChild(item);
+
+    })
+
+  }
+
   // set up a function to initialize the movies
   async function initialize() {
     // need to call the serverless function
@@ -93,6 +123,8 @@
       // set the title and tagline for the movie
       element.querySelector('h2').innerText = movie.title;
       element.querySelector('.tagline').innerText = movie.tagline;
+
+      addScores(element, movie.scores);
 
       // need to add to the DOM
       container.appendChild(element);
