@@ -55,3 +55,50 @@
 </style>
 
 <h1>Movies, Floofed</h1>
+
+<div class="movies"></div>
+
+<!-- each movie will have an image, a title, a tagline, and viewer ratings -->
+<template id="movie-template">
+  <div class="movie">
+    <img src="" />
+    <h2></h2>
+    <p class="tagline"></p>
+
+    <h3>Viewer Ratings</h3>
+    <ul class="scores"></ul>
+  </div>
+</template>
+
+<script>
+  // set up a function to initialize the movies
+  async function initialize() {
+    // need to call the serverless function
+    const movies = await fetch('/.netlify/functions/movies')
+      .then((response) => response.json());
+
+    const container = document.querySelector('.movies')
+    const template = document.querySelector('#movie-template')
+
+    movies.forEach((movie) => {
+      // create an element
+      const element = template.content.cloneNode(true);
+
+      // once you have a new element, that is what will go in the DOM
+      // update the image
+      const img = element.querySelector('img');
+      img.src = movie.poster;
+      img.alt = movie.title;
+
+      // set the title and tagline for the movie
+      element.querySelector('h2').innerText = movie.title;
+      element.querySelector('.tagline').innerText = movie.tagline;
+
+      // need to add to the DOM
+      container.appendChild(element);
+    })
+  }
+
+  // call your initialize function
+  initialize();
+</script>
