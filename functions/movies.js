@@ -1,10 +1,23 @@
 require("dotenv").config();
 const { URL } = require("url");
 const fetch = require("node-fetch");
-
-const movies = require("../data/movies.json");
+const { query } = require("./utils/hasura");
 
 exports.handler = async () => {
+  // perform a test query, paste the query from the Hasura GraphQL query section
+  const { movies } = await query({
+    query: `
+      query getMovie {
+        movies {
+          id
+          title
+          tagline
+          poster
+        }
+      }
+    `,
+  });
+
   const api = new URL("https://www.omdbapi.com/");
 
   // add secret api key
