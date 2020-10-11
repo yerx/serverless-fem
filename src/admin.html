@@ -60,6 +60,8 @@
   }
 </style>
 
+<a class="logout" href="#logout">Log Out</a>
+
 <h1>Add a New Movie</h1>
 
 <div class="message"></div>
@@ -76,6 +78,26 @@
 
 
 <script>
+  function handleIdentityEvent(user) {
+    // if the user is logged in, keep the user on the admin page
+    if (user && user.token) {
+      return;
+    }
+
+    // else redirect the user to the login page
+    window.location.pathname = '/login/';
+  }
+
+  window.netlifyIdentity.on('init', handleIdentityEvent);
+  window.netlifyIdentity.on('logout', handleIdentityEvent);
+
+  // handle the logout
+  document.querySelector('.logout').addEventListener('click', (event) => {
+    event.preventDefault();
+    // use the netlify Identity object logout method
+    window.netlifyIdentity.logout();
+  })
+
   // create async function handler to get the form data
   async function handleSubmit(event) {
     event.preventDefault();
