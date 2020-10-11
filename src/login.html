@@ -21,3 +21,20 @@
 <div data-netlify-identity-button></div>
 
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+<script>
+  function handleLogin(user) {
+    // if there is no user or no JWT then stay on the login page
+    if (!user || !user.token) {
+      return;
+    }
+
+    // if a user is logged in, take the user to the admin page
+    window.location.pathname = '/admin/';
+  }
+
+  // netlify identity returns an object in the window
+  // add event listeners for init and login and pass in the handleLogin function
+  window.netlifyIdentity.on('init', handleLogin);
+  window.netlifyIdentity.on('login', handleLogin);
+</script>
