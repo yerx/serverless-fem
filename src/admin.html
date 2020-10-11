@@ -102,12 +102,21 @@
   async function handleSubmit(event) {
     event.preventDefault();
 
+    // get the user access token
+    const {
+      access_token
+    } = window.netlifyIdentity.currentUser().token;
+
     // declare constant data set equal to the new form data and pass in the event.target
     const data = new FormData(event.target);
 
     // perform a fetch to the add-movie serverless function. For the body, use the FormData GET method to grab the input field values for id, title, tagline, poster
     const result = await fetch('/.netlify/functions/add-movie', {
       method: 'POST',
+      // add access token to the header authorization property
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      },
       body: JSON.stringify({
         // pass in the name of the HTML input element into data.get
         id: data.get('id'),
